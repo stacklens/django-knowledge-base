@@ -8,14 +8,14 @@
             <div class="col-12">
                 <a class="btn btn-primary" href="{% url 'home' %}" role="button">Home</a>
                 <a class="btn btn-warning"
-                   href="{% url 'demo:home_with_context_and_params' 0 %}"
+                   href="{% url 'demo:home_with_context' 0 %}"
                    role="button"
                 >
                     Url
                 </a>
                 <a class="btn btn-danger" href="{% url 'demo:reverse' %}" role="button">Reverse</a>
                 <a class="btn btn-success"
-                   href="{% url 'demo:home_with_context_and_params' 1 %}"
+                   href="{% url 'demo:reverse' 1 %}"
                    role="button"
                 >
                     Reverse with params
