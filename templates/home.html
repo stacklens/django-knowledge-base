@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <h3 class="col-12 mt-4">Reverse()</h3>
+            <div class="col-12">
+                <a class="btn btn-primary" href="{% url 'home' %}" role="button">Home</a>
+                <a class="btn btn-warning"
+                   href="{% url 'demo:home_with_context_and_params' 0 %}"
+                   role="button"
+                >
+                    Url
+                </a>
+                <a class="btn btn-danger" href="{% url 'demo:reverse' %}" role="button">Reverse</a>
+                <a class="btn btn-success"
+                   href="{% url 'demo:home_with_context_and_params' 1 %}"
+                   role="button"
+                >
+                    Reverse with params
+                </a>
+                <span class="alert alert-light" role="alert">{{ content }}</span>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
