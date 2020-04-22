@@ -33,3 +33,11 @@ reverse('another_name', args=(id,))
 ```
 
 因此带有参数的路由也可以正确解析了。简单又好用吧。
+
+用之前记得导入：
+
+```python
+from django.urls import reverse
+from django.shortcuts import redirect
+```
+

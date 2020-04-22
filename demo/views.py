@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import View
 from django.urls import reverse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, get_object_or_404
 
 from .models import Post
 
@@ -46,7 +46,7 @@ class HomePageWithContextView(View):
         return render(request, 'home.html', context=context)
 
 
-# MARK: - redirect()
+# MARK: - redirect() && get_object_or_404()
 
 # 跳转view
 class RedirectView(View):
@@ -70,11 +70,33 @@ class RedirectView(View):
 class PostDetailView(View):
     def get(self, request, *args, **kwargs):
         id = kwargs.get('id')
-        post = Post.objects.get(id=id)
+
+        # post = Post.objects.get(id=id)
+        post = get_object_or_404(Post, id=id)
+
         return render(request, 'post_detail.html', context={'post': post})
 
 
 # view_name 跳转
 def redirect_view(request, id):
-    post = Post.objects.get(id=id)
+    # post = Post.objects.get(id=id)
+    queryset = Post.objects.filter(title__startswith='V')
+    post = get_object_or_404(queryset, id=id)
+
     return render(request, 'post_detail.html', context={'post': post})
+
+
+# MARK: - path()
+def path_demo_view(request, count, salute):
+    count = count
+    salute = salute
+    first_name = request.GET.get('first_name')
+    last_name = request.GET.get('last_name')
+    return render(request,
+                  'path.html',
+                  context={
+                      'count': count,
+                      'salute': salute,
+                      'first_name': first_name,
+                      'last_name': last_name}
+                  )

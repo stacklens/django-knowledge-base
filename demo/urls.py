@@ -5,6 +5,7 @@ from .views import (
     RedirectView,
     PostDetailView,
     redirect_view,
+    path_demo_view,
 )
 
 app_name = 'demo'
@@ -35,4 +36,7 @@ urlpatterns = [
     path('redirect-by-view/<int:id>/', redirect_view, name='redirect_view'),
     # 被跳转 url
     path('post-detail/<int:id>/', PostDetailView.as_view(), name='detail'),
+
+    # MARK: - path()
+    path('path/<int:count>/<str:salute>/', path_demo_view, name='path'),
 ]

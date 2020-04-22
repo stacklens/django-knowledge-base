@@ -61,3 +61,11 @@ return redirect('/your_url/{}/'.format(post.id))
 ```
 
 参数也可以通过字符串格式化传递进去，不过这种方式属于硬编码，还是少用为好。
+
+导入路径在这里：
+
+```python
+from django.urls import reverse
+from django.shortcuts import redirect
+```
+
