@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.urls import reverse
 
 
 class Post(models.Model):
@@ -10,6 +11,9 @@ class Post(models.Model):
 
     class Meta:
         ordering = ('-created',)
+
+    def get_absolute_url(self):
+        return reverse('demo:detail', args=(self.id,))
 
     def __str__(self):
         return self.title

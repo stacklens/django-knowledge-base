@@ -2,37 +2,34 @@
 
 {% block content %}
 
-    <div class="container">
-        <div class="row">
-            <h3 class="col-12 mt-4">reverse()</h3>
-            <div class="col-12">
-                <a class="btn btn-primary" href="{% url 'home' %}" role="button">Home</a>
-                <a class="btn btn-warning"
-                   href="{% url 'demo:home_with_context' 0 %}"
-                   role="button"
-                >
-                    Url
-                </a>
-                <a class="btn btn-danger" href="{% url 'demo:reverse' %}" role="button">Reverse</a>
-                <a class="btn btn-success"
-                   href="{% url 'demo:reverse' 1 %}"
-                   role="button"
-                >
-                    Reverse with params
-                </a>
-                <span class="alert alert-light" role="alert">{{ content }}</span>
-            </div>
 
-            <h3 class="col-12 mt-4">redirect()</h3>
-            <div class="">
-                {% for post in posts %}
-                    <div class="alert alert-warning">
-
-                        <a class="col-12 alert-link" href="#">{{ post.title }}</a>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
+    <h3 class="col-12 mt-4">reverse()</h3>
+    <div class="col-12">
+        <a class="btn btn-primary" href="{% url 'home' %}" role="button">Home</a>
+        <a class="btn btn-warning"
+           href="{% url 'demo:home_with_context' 0 %}"
+           role="button"
+        >
+            Url
+        </a>
+        <a class="btn btn-danger" href="{% url 'demo:reverse' %}" role="button">Reverse</a>
+        <a class="btn btn-success"
+           href="{% url 'demo:reverse' 1 %}"
+           role="button"
+        >
+            Reverse with params
+        </a>
+        <span class="alert alert-light" role="alert">{{ content }}</span>
     </div>
+
+    <h3 class="col-12 mt-4">redirect()</h3>
+    <div class="">
+        {% for post in posts %}
+            <div class="alert alert-warning">
+                <a class="col-12 alert-link" href="{% url 'demo:redirect' post.id %}">{{ post.title }}</a>
+            </div>
+        {% endfor %}
+    </div>
+
 
 {% endblock %}

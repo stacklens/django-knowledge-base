@@ -2,12 +2,15 @@ from django.urls import path
 from .views import (
     ReverseView,
     HomePageWithContextView,
+    RedirectView,
+    PostDetailView,
+    redirect_view,
 )
 
 app_name = 'demo'
 
 urlpatterns = [
-    # MARK: - Reverse()
+    # MARK: - reverse()
     path('reverse/',
          ReverseView.as_view(),
          name='reverse'),
@@ -23,4 +26,13 @@ urlpatterns = [
     path('home-with-context/<int:id>/',
          HomePageWithContextView.as_view(),
          name='home_with_context'),
+
+    # MARK: - redirect()
+
+    # byModel
+    path('redirect/<int:id>/', RedirectView.as_view(), name='redirect'),
+    # byView
+    path('redirect-by-view/<int:id>/', redirect_view, name='redirect_view'),
+    # 被跳转 url
+    path('post-detail/<int:id>/', PostDetailView.as_view(), name='detail'),
 ]

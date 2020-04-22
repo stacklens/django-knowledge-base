@@ -18,7 +18,7 @@ path('foo/', some_view, name='foo_name'),
 return redirect('/foo/')
 ```
 
-但是这样把 `url` 硬编码到代码里了，更好的写法就要用到主角 `reverse()` 了：
+但是这样把 `url` 硬编码到代码里了，不美。更好的写法就要用到主角 `reverse()` 了：
 
 ```python
 return redirect(reverse('foo_name'))

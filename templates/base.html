@@ -18,9 +18,14 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"></script>
 
 
-
 {% include "header.html" %}
-{% block content %}{% endblock %}
+
+<div class="container">
+    <div class="row">
+        {% block content %}{% endblock %}
+    </div>
+</div>
+
 {% block script %}{% endblock %}
 
 </body>
