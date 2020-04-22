@@ -74,6 +74,9 @@ class PostDetailView(View):
         # post = Post.objects.get(id=id)
         post = get_object_or_404(Post, id=id)
 
+        # update()
+        post.increase_view()
+
         return render(request, 'post_detail.html', context={'post': post})
 
 
@@ -82,6 +85,9 @@ def redirect_view(request, id):
     # post = Post.objects.get(id=id)
     queryset = Post.objects.filter(title__startswith='V')
     post = get_object_or_404(queryset, id=id)
+
+    # update()
+    post.increase_view()
 
     return render(request, 'post_detail.html', context={'post': post})
 

@@ -8,6 +8,9 @@ import uuid
 class Post(models.Model):
     title = models.CharField(max_length=100)
     body = models.TextField(blank=True)
+
+    views = models.IntegerField(default=0)
+
     created = models.DateTimeField(default=timezone.now)
     updated = models.DateTimeField(auto_now=True)
 
@@ -16,6 +19,10 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('demo:detail', args=(self.id,))
+
+    def increase_view(self):
+        self.views += 1
+        self.save(update_fields=['views'])
 
     def __str__(self):
         return self.title

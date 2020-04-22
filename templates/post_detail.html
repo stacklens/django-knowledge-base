@@ -2,5 +2,6 @@
 
 {% block content %}
     <h2 class="col-12 mt-4">{{ post.title }}</h2>
-    <div class="col-12 mt-4">{{ post.body }}</div>
+    <div class="col-12 mt-2 mb-2">阅读量：{{ post.views }} &emsp;&emsp; 更新时间：{{ post.updated | date:"Y/m/d H:m:s" }}</div>
+    <div class="col-12">{{ post.body }}</div>
 {% endblock %}
