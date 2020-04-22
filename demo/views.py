@@ -3,10 +3,15 @@ from django.views.generic import View
 from django.urls import reverse
 from django.shortcuts import redirect
 
-# MARK: - Reverse()
+from .models import Post
+
+# MARK: - reverse()
+# MARK: - redirect()
+
 class HomePageView(View):
     def get(self, request):
-        return render(request, 'home.html', context={})
+        posts = Post.objects.all()
+        return render(request, 'home.html', context={'posts': posts})
 
 
 class ReverseView(View):
@@ -33,4 +38,6 @@ class HomePageWithContextView(View):
         else:
             context = {'content': '我从 Reverse() 回来'}
 
+        posts = Post.objects.all()
+        context.update({'posts': posts})
         return render(request, 'home.html', context=context)

@@ -23,5 +23,4 @@ urlpatterns = [
     path('home-with-context/<int:id>/',
          HomePageWithContextView.as_view(),
          name='home_with_context'),
-
 ]

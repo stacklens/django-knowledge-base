@@ -2,7 +2,7 @@
 [![](https://img.shields.io/badge/django-3.0.5-green.svg)](https://docs.djangoproject.com)
 [![](https://img.shields.io/badge/license-MIT-000000.svg)](https://opensource.org/licenses/MIT)
 
-# Django知识库
+# Django知识库(更新中)
 
 这是关于 Django 框架的零散但有用知识点的 Handbook。
 
