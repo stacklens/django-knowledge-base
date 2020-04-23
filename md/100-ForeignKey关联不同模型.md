@@ -13,7 +13,7 @@ class Person(models.Model):
 
 # 起过渡作用的桥接模型
 class Owner(models.Model):
-    # 个人
+    # 用户
     person = models.OneToOneField(
         Person,
         null=True,
