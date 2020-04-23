@@ -96,3 +96,48 @@ class Person(models.Model):
     @property
     def full_name(self):
         return f"{self.first_name} {self.last_name}"
+
+
+# MARK: - Model 的继承 - 抽象基类
+class Animal(models.Model):
+    name = models.CharField(max_length=100)
+    age = models.IntegerField(default=5)
+    finger_count = models.IntegerField(default=10)
+
+    class Meta:
+        abstract = True
+
+
+class Bird(Animal):
+    flying_height = models.IntegerField(default=2000)
+    age = models.TextField(default='5 years old')
+    finger_count = None
+
+
+# MARK: - Model 的继承 - 多表继承
+class Human(models.Model):
+    name = models.CharField(max_length=100)
+
+
+class Baby(Human):
+    age = models.IntegerField(default=0)
+    human_ptr = models.OneToOneField(
+        Human, on_delete=models.CASCADE,
+        parent_link=True,
+        primary_key=True,
+    )
+
+
+# MARK: - Model 的继承 - 代理模式
+class Car(models.Model):
+    name = models.CharField(max_length=30)
+
+
+class MyCar(Car):
+    class Meta:
+        ordering = ["name"]
+        proxy = True
+
+    def do_something(self):
+        # ...
+        pass
