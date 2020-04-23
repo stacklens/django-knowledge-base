@@ -17,5 +17,5 @@
 
 ## 内容导航
 
-[1. Reverse() 在视图中跳转](md/10-用Reverse()在视图中跳转.md)
+1. [reverse() 路由解析](md/010-用reverse()在视图中跳转.md)
 
