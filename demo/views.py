@@ -74,10 +74,9 @@ class PostDetailView(View):
         # post = Post.objects.get(id=id)
         post = get_object_or_404(Post, id=id)
 
-        # update()
-        post.increase_view()
+        (post, owner) = detail_setup_helper(post)
 
-        return render(request, 'post_detail.html', context={'post': post})
+        return render(request, 'post_detail.html', context={'post': post, 'owner': owner})
 
 
 # view_name 跳转
@@ -86,10 +85,9 @@ def redirect_view(request, id):
     queryset = Post.objects.filter(title__startswith='V')
     post = get_object_or_404(queryset, id=id)
 
-    # update()
-    post.increase_view()
+    post, owner = detail_setup_helper(post)
 
-    return render(request, 'post_detail.html', context={'post': post})
+    return render(request, 'post_detail.html', context={'post': post, 'owner': owner})
 
 
 # MARK: - path()
@@ -106,3 +104,12 @@ def path_demo_view(request, count, salute):
                       'first_name': first_name,
                       'last_name': last_name}
                   )
+
+
+def detail_setup_helper(obj):
+    # MARK: - update()
+    obj.increase_view()
+    # 刷新数据
+    obj.refresh_from_db()
+
+    return obj, obj.owner.get_owner()
