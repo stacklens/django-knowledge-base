@@ -35,8 +35,16 @@
 
     <div class="col-6">
         <div class="alert alert-primary">
-            <a class="col-12 alert-link" href="{% url 'demo:path' 99 'welcome' %}?first_name=Du&last_name=Sai">通过 path() 传递参数</a>
+            <a class="col-12 alert-link" href="{% url 'demo:path' 99 'welcome' %}?first_name=Du&last_name=Sai">通过 path()
+                传递参数</a>
         </div>
+    </div>
+
+    <h3 class="col-12 mt-4">@property 与模型方法</h3>
+
+    <div class="col-6">
+        <div class="alert alert-info">Full name: {{ name1 }}</div>
+        <div class="alert alert-info">Full name: {{ name2 }}</div>
     </div>
 
 

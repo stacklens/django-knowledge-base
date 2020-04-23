@@ -3,7 +3,7 @@ from django.views.generic import View
 from django.urls import reverse
 from django.shortcuts import redirect, get_object_or_404
 
-from .models import Post
+from .models import Post, Person
 
 
 # MARK: - reverse()
@@ -12,7 +12,14 @@ from .models import Post
 class HomePageView(View):
     def get(self, request):
         posts = Post.objects.all()
-        return render(request, 'home.html', context={'posts': posts})
+
+        name1, name2 = get_name()
+
+        return render(
+            request,
+            'home.html',
+            context={'posts': posts, 'name1': name1, 'name2': name2}
+        )
 
 
 # 重定向view
@@ -42,7 +49,9 @@ class HomePageWithContextView(View):
             context = {'content': '我从 Reverse() 回来'}
 
         posts = Post.objects.all()
-        context.update({'posts': posts})
+
+        name1, name2 = get_name()
+        context.update({'posts': posts, 'name1': name1, 'name2': name2})
         return render(request, 'home.html', context=context)
 
 
@@ -74,7 +83,7 @@ class PostDetailView(View):
         # post = Post.objects.get(id=id)
         post = get_object_or_404(Post, id=id)
 
-        (post, owner) = detail_setup_helper(post)
+        (post, owner) = detail_setup(post)
 
         return render(request, 'post_detail.html', context={'post': post, 'owner': owner})
 
@@ -85,7 +94,7 @@ def redirect_view(request, id):
     queryset = Post.objects.filter(title__startswith='V')
     post = get_object_or_404(queryset, id=id)
 
-    post, owner = detail_setup_helper(post)
+    post, owner = detail_setup(post)
 
     return render(request, 'post_detail.html', context={'post': post, 'owner': owner})
 
@@ -106,10 +115,17 @@ def path_demo_view(request, count, salute):
                   )
 
 
-def detail_setup_helper(obj):
+# Helper
+
+def detail_setup(obj):
     # MARK: - update()
     obj.increase_view()
     # 刷新数据
     obj.refresh_from_db()
-
     return obj, obj.owner.get_owner()
+
+
+def get_name():
+    name1 = Person.objects.all().first().full_name
+    name2 = Person.objects.all().first().full_name_with_midname('Wen')
+    return name1, name2

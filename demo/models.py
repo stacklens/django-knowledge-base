@@ -83,3 +83,16 @@ class UUIDModel(models.Model):
 
     def __str__(self):
         return self.id
+
+
+# MARK: - @property
+class Person(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+
+    def full_name_with_midname(self, midname):
+        return f"{self.first_name} {midname} {self.last_name}"
+
+    @property
+    def full_name(self):
+        return f"{self.first_name} {self.last_name}"
