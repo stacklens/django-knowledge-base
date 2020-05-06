@@ -91,7 +91,7 @@ class PostDetailView(View):
 # view_name 跳转
 def redirect_view(request, id):
     # post = Post.objects.get(id=id)
-    queryset = Post.objects.filter(title__startswith='V')
+    queryset = Post.objects.filter(title__startswith='S')
     post = get_object_or_404(queryset, id=id)
 
     post, owner = detail_setup(post)
