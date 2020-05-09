@@ -26,4 +26,4 @@ urlpatterns = [
     path('demo/', include('demo.urls', namespace='demo')),
     path('', HomePageView.as_view(), name='home'),
 ]
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
