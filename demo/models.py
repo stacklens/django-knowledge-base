@@ -181,3 +181,8 @@ class Age(models.Model):
 # MARK: - 批量上传文件
 class Image(models.Model):
    image = models.ImageField(upload_to='images/%Y%m%d')
+
+   def admin_image(self):
+       return '<img src="%s"/>' % self.image
+
+   admin_image.allow_tags = True

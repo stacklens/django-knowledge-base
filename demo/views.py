@@ -127,7 +127,7 @@ def uploads_files(request):
             file = Image(image=f)
             file.save()
 
-        return render(request, 'uploads_images.html', context={'images': Image.objects.all()})
+    return render(request, 'uploads_images.html', context={'images': Image.objects.all()})
 
 
 # Helper
