@@ -170,3 +170,9 @@ class MyCar(Car):
     def do_something(self):
         # ...
         pass
+
+
+# MARK: - F 函数
+class Age(models.Model):
+    year = models.IntegerField(default=6)
+    month = models.IntegerField(default=10)
