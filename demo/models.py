@@ -176,3 +176,8 @@ class MyCar(Car):
 class Age(models.Model):
     year = models.IntegerField(default=6)
     month = models.IntegerField(default=10)
+
+
+# MARK: - 批量上传文件
+class Image(models.Model):
+   image = models.ImageField(upload_to='images/%Y%m%d')

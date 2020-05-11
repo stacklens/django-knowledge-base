@@ -2,8 +2,9 @@ from django.shortcuts import render
 from django.views.generic import View
 from django.urls import reverse
 from django.shortcuts import redirect, get_object_or_404
+from django.http import HttpResponse
 
-from .models import Post, Person
+from .models import Post, Person, Image
 
 
 # MARK: - reverse()
@@ -113,6 +114,20 @@ def path_demo_view(request, count, salute):
                       'first_name': first_name,
                       'last_name': last_name}
                   )
+
+
+# MARK: - 批量上传文件
+def uploads_files(request):
+    if request.method == 'POST':
+
+        # do validate here...
+
+        files = request.FILES.getlist('file_field')
+        for f in files:
+            file = Image(image=f)
+            file.save()
+
+        return render(request, 'uploads_images.html', context={'images': Image.objects.all()})
 
 
 # Helper

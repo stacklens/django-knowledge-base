@@ -6,6 +6,7 @@ from .views import (
     PostDetailView,
     redirect_view,
     path_demo_view,
+    uploads_files,
 )
 
 app_name = 'demo'
@@ -39,4 +40,7 @@ urlpatterns = [
 
     # MARK: - path()
     path('path/<int:count>/<str:salute>/', path_demo_view, name='path'),
+
+    # MRAK: - 批量上传文件
+    path('uploads/', uploads_files, name='uploads'),
 ]

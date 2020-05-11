@@ -47,5 +47,28 @@
         <div class="alert alert-info">Full name: {{ name2 }}</div>
     </div>
 
+    <h3 class="col-12 mt-4">批量上传文件</h3>
+    <div class="col-6">
+        <form action="{% url 'demo:uploads' %}"
+              method="post"
+              enctype="multipart/form-data"
+        >{% csrf_token %}
+            <div class="form-group">
+                <input type="file"
+                       id="upload"
+                       name="file_field"
+                       required
+                       placeholder="请输入标题"
+                       autocomplete="off"
+                       class="form-control-file"
+                       multiple="multiple"
+                >
+            </div>
+            <div class="form-group">
+                <input type="submit" value="提交" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+
 
 {% endblock %}
