@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, UUIDModel, Owner, Group, Person, Human, Baby, MyCar, MyUser, Age, Image
+from .models import Post, UUIDModel, Owner, Group, Person, Human, Baby, MyCar, MyUser, Age, Image, PostQS
 
 from django.contrib.auth.admin import UserAdmin
 
@@ -25,4 +25,4 @@ admin.site.register(Baby)
 admin.site.register(MyCar)
 admin.site.register(Age)
 admin.site.register(Image, ImageAdmin)
-# admin.site.register(Image)
+admin.site.register(PostQS)

@@ -180,9 +180,25 @@ class Age(models.Model):
 
 # MARK: - 批量上传文件
 class Image(models.Model):
-   image = models.ImageField(upload_to='images/%Y%m%d')
+    image = models.ImageField(upload_to='images/%Y%m%d')
 
-   def admin_image(self):
-       return '<img src="%s"/>' % self.image
+    def admin_image(self):
+        return '<img src="%s"/>' % self.image
 
-   admin_image.allow_tags = True
+    admin_image.allow_tags = True
+
+
+# MARK: - Queryset
+class PostQS(models.Model):
+    owner = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='posts_QS')
+
+    title = models.CharField(max_length=100)
+    body = models.TextField(blank=True)
+
+    created = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        ordering = ('-created',)
+
+    def __str__(self):
+        return self.title
