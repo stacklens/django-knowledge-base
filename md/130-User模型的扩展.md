@@ -79,6 +79,6 @@ admin.site.register(MyUser, MyUserAdmin)
 
 这段代码的意思就是说，我现在要注册的这个定制的 `MyUser` 基本沿用默认的实现，并且添加了扩展的字段。再回到后台中，可以看到密码已经哈希过了，并且扩展的字段也都能正常显示了。
 
-这种方式的好处就是把所有字段都整合到同一个表中，并且还具有默认 `User` 的完全实现。缺点就是会很强的改变用户模型的结构，所以尽可能在项目开始时就谨慎考虑，谨慎使用。
+这种方式的好处就是把所有字段都整合到同一个表中，并且还具有默认 `User` 的完全实现。缺点就是会改变用户模型的结构，所以尽可能在项目开始时就谨慎考虑，谨慎使用。
 
 > 本文参考了 [How to Extend Django User Model](https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html)，文章中还介绍了代理模式扩展和 `AbstractBaseUser` 扩展，有兴趣的读者可以研究一下。
