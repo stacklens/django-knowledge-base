@@ -202,3 +202,33 @@ class PostQS(models.Model):
 
     def __str__(self):
         return self.title
+
+
+# MARK: - create() by CustomManager
+class BookManager(models.Manager):
+    def create_book(self, title):
+        book = self.create(title=title)
+        book.save()
+        # do something with the book
+        return book
+
+    def get_queryset(self):
+        return super().get_queryset().filter(title__contains='again')
+
+
+class Book(models.Model):
+    title = models.CharField(max_length=100)
+
+    objects = models.Manager()
+    custom = BookManager()
+
+    @classmethod
+    def create(cls, title):
+        book = cls(title=title)
+        # do something with the book
+        return book
+
+    def save(self, *args, **kwargs):
+        # do something here...
+
+        super().save(*args, **kwargs)
