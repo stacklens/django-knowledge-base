@@ -2,7 +2,7 @@
 [![](https://img.shields.io/badge/django-3.0.5-green.svg)](https://docs.djangoproject.com)
 [![](https://img.shields.io/badge/license-MIT-000000.svg)](https://opensource.org/licenses/MIT)
 
-# Django知识库(更新中)
+# Django知识库
 
 这是关于 Django 框架的零散但有用知识点的 Handbook。
 
@@ -17,5 +17,8 @@
 
 ## 内容导航
 
-1. [reverse() 路由解析](md/010-reverse()路由解析.md)
+👉👉👉[教程传送门](md/)👈👈👈
 
+想寻找学伴互相交流学习的，可以加 **Django交流QQ群**：107143175，或者**博主微信**：dusai0523。一个人学习难免走弯路，有热心人帮忙就不再寂寞了。
+
+![](https://www.dusaiphoto.com/media/image/image_source/20190930/QR.jpg)
