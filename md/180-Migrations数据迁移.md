@@ -60,7 +60,9 @@ Following files were affected
  D:\...\mig\migrations\0001_initial.py
 ```
 
-如上面的输出文字所述，指令执行完毕后会生成 `mig/migrations/0001_initial.py` 文件。来看看这个文件的内容：
+如上面的输出文字所述，指令执行完毕后会生成 `mig/migrations/0001_initial.py` 文件。在执行 `makemigrations` 指令时，Django 不会检查你的数据库，而是根据目前的模型的状态，创建一个操作列表，使项目状态与模型定义保持最新。
+
+来看看这个文件的内容：
 
 ```python
 from django.db import migrations, models
@@ -115,7 +117,7 @@ Running migrations:
 
 ```python
 class Pen(models.Model):
-    price = models.DecimalField()
+    price = models.DecimalField(max_digits=7, decimal_places=2)
     ...
 ```
 
@@ -333,11 +335,7 @@ class Migration(migrations.Migration):
 
 这次迁移是可以成功的，而且 Django 还补了个 0004 号文件把缺失的操作给补上了。
 
-**第二种方式：**将缺失的依赖之后的迁移文件全部删除，也可以成功迁移。
-
-**第三种方式：**
-
-
+**第二种方式：**将缺失的依赖之后产生的迁移文件全部删除，也可以成功重新迁移。
 
 ### 作死4号
 
@@ -374,4 +372,103 @@ Running migrations:
 
 删除 `length` 字段的指令没执行！这是因为数据库 `django_migrations` 表已经有同名记录了，Django 觉得这个文件里的操作都执行过了，就不再执行了。
 
-这样子的结果就是 Model 和数据库字段不一致，在进行相关 ORM 操作时就会出现各种报错。不要以为这种情况很少见，在自动生成迁移文件的过程中是有可能发生的。
+这样子的结果就是 Model 和数据库字段不一致，在进行相关 ORM 操作时就会出现各种报错。不要以为这种情况很少见，新手在不正常操作迁移的过程中是有可能发生的。
+
+## 迁移重建
+
+如果经过你一顿骚操作，迁移文件、迁移记录表混乱不堪，并且无法正常迁移或者 ORM 频繁报错，有下面几种方法可以让迁移恢复正常，请酌情使用。
+
+### 方案1
+
+**项目在开发过程中，并且你不介意丢弃整个数据库。**
+
+- 删除每个 App 下的迁移文件，`__init__.py` 除外。
+- 删除当前数据库，或者根目录下的 `db.sqlite3` 文件。
+- 重新迁移。
+
+胜败乃兵家常事，大侠请重新来过。这是最省事的方法。
+
+### 方案2
+
+**你想保留数据，但是某个 App 的迁移文件和数据库未能同步（类似上面的作死4号）。**
+
+举例如果 0003 号文件中的操作未能同步，那么执行下面的指令：
+
+```python
+> python manage.py migrate --fake mig 0002
+
+Operations to perform:
+  Target specific migration: 0002_xxx, from mig
+Running migrations:
+  Rendering model states... DONE
+  Unapplying mig.0003_auto_xxx... FAKED
+```
+
+`migrate --fake mig 0002` 指令将数据库中的 `django_migrations` 表回滚到 0002 号文件。
+
+查看一下迁移状态：
+
+```python
+> python manage.py showmigrations
+
+...
+mig
+ [X] 0001_initial
+ [X] 0002_xxx
+ [ ] 0003_auto_xxx
+...
+```
+
+表示 0003 号文件还未迁移。
+
+然后重新迁移就好了：
+
+```python
+> python manage.py migrate
+
+Operations to perform:
+  Apply all migrations: ..., mig, ...
+Running migrations:
+  Applying mig.0003_auto_xxx... OK
+```
+
+### 方案3
+
+**如果你的数据库是现成的，但是 Django 中没有任何迁移文件。**（比如 Django 是开发完成后才采用的）
+
+首先在 `models.py` 中编写模型，确保模型和数据库中的表是完全一致的。
+
+首先执行：
+
+```python
+> python manage.py makemigrations
+```
+
+创建初始迁移文件 `0001_initial.py`。
+
+然后执行：
+
+```python
+> python manage.py migrate --fake-initial mig
+```
+
+这句的意思是：伪造一份 `mig` App 的初始迁移记录表（`django_migrations`），让 Django 误以为初始迁移已经完成了。
+
+顺利的话就已经搞定了：
+
+```python
+> python manage.py makemigrations
+
+No changes detected
+
+> python manage.py migrate
+
+Operations to perform:
+  Apply all migrations: ..., mig, ...
+Running migrations:
+  No migrations to apply.
+```
+
+除了上面三种方法外，前面还介绍了**修改依赖**、**删除错误迁移文件**等方法，请量体裁衣。
+
+迁移愉快！
