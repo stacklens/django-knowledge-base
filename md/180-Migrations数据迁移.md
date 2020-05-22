@@ -1,4 +1,4 @@
-如果你不熟悉 Web 开发，那你可能很难理解数据迁移为什么是一个强力的功能。
+如果你不熟悉 Web 开发，那你可能很难理解**数据迁移**为什么是一个强力的功能。
 
 ## 对象关系映射
 
@@ -77,7 +77,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Pen',
             fields=[
-                ('id', models.AutoField(...')),
+                ('id', models.AutoField(...)),
                 ('price', models.IntegerField()),
                 ('color', models.CharField(...)),
                 ('purchase_date', models.DateTimeField(...)),
@@ -143,7 +143,7 @@ class Migration(migrations.Migration):
 - `migrations` 目录下的迁移文件非常重要并且**相互依赖**，一般情况下不要随意去修改（虽然 Django 允许你手动维护）。
 - 通常情况下，对数据库的操作尽可能通过迁移的方式。如果因为某些原因需要手动修改，那么你需要做好手动维护的准备。
 
-继续回到代码。 `operations` 列表中的 `AlterField` 表示这次是更改操作。Django 内部有一套机制来尽可能的判断用户对模型的操作的具体类型，但是如果你一次进行了很多复杂的改动（比如同时进行多项修改、删除、新增），那么它也会犯糊涂，不知道你想干什么。为了避免这种尴尬的事情，对数据库下手不要太重哦。
+继续回到代码。 `operations` 列表中的 `AlterField` 表示这次是更改操作。Django 内部有一套机制来尽可能的判断用户对模型的操作的具体类型，但是如果你一次进行了很多复杂的改动（比如同时进行多项修改、删除、新增），那么它也会犯糊涂，不知道你想干什么。为了避免这种尴尬的事情，对数据库下手不要太重。
 
 再修改模型试试：
 
@@ -372,11 +372,45 @@ Running migrations:
 
 删除 `length` 字段的指令没执行！这是因为数据库 `django_migrations` 表已经有同名记录了，Django 觉得这个文件里的操作都执行过了，就不再执行了。
 
-这样子的结果就是 Model 和数据库字段不一致，在进行相关 ORM 操作时就会出现各种报错。不要以为这种情况很少见，新手在不正常操作迁移的过程中是有可能发生的。
+这样子的结果就是 Model 和数据库字段不一致，在进行相关 ORM 操作时就会出现各种报错。
+
+不要以为这种情况很少见，新手在不正常操作迁移的过程中是有可能发生的。
+
+## 迁移伪造
+
+如果你哪天真的手贱手动操作了与迁移相关的内容，遇到迁移表和数据库无法正常同步的问题，那么你可能会用到迁移伪造指令 `--fake`。这个指令根据 App 现有的迁移文件内容，伪造 `dango_migrations` 表中的内容，欺骗 Django 的迁移状态，从而帮助你从报错中解脱出来。
+
+举个例子。某天你手贱将 `django_migrations` 表中有关于 `mig` App 的记录全删除了，那么就可以用：
+
+```python
+> python manage.py migrate --fake mig
+```
+
+Django 会把 `mig` 中现有的迁移文件的记录全补到 `django_migrations` 。这样做能成功的前提是迁移文件本身没出问题。
+
+又比如说因为某些骚操作，0003 号迁移文件中的 model 改动总是无法同步到数据库，那么你可以：
+
+```python
+> python manage.py migrate --fake mig 0002
+```
+
+可以将 `django_migrations` 表退回到 0002 号迁移文件的位置，然后你可以用重新执行 0003 号文件的迁移等方法进行恢复。（或者删除 0003 号迁移文件，重新 `makemigrations`）
+
+又比如说你由于某些原因需要把 `mig` 的迁移记录全部清除，那么可以：
+
+```python
+> python manage.py migrate --fake mig zero
+```
+
+执行此句后有关 `mig` 的 `django_migrations` 记录将全部消失，你再根据具体情况，进行后续的迁移恢复。
+
+也就是说，`migrate --fake` 指令可以修改 `django_migrations` 表中的记录，但并不会真正的修改数据库本身。
+
+希望你永远都用不到 `--fake`。
 
 ## 迁移重建
 
-如果经过你一顿骚操作，迁移文件、迁移记录表混乱不堪，并且无法正常迁移或者 ORM 频繁报错，有下面几种方法可以让迁移恢复正常，请酌情使用。
+如果经过你一顿骚操作，迁移文件、迁移记录表混乱不堪，并且无法正常迁移或者 ORM 频繁报错，有下面几种方法可以让迁移恢复正常。
 
 ### 方案1
 
@@ -434,7 +468,7 @@ Running migrations:
 
 ### 方案3
 
-**如果你的数据库是现成的，但是 Django 中没有任何迁移文件。**（比如 Django 是开发完成后才采用的）
+**如果你的数据库是现成的，但是 Django 中没有任何迁移文件。**（比如 Django 是数据库开发完成后才加入的）
 
 首先在 `models.py` 中编写模型，确保模型和数据库中的表是完全一致的。
 
@@ -452,7 +486,7 @@ Running migrations:
 > python manage.py migrate --fake-initial mig
 ```
 
-这句的意思是：伪造一份 `mig` App 的初始迁移记录表（`django_migrations`），让 Django 误以为初始迁移已经完成了。
+这句的意思是：伪造一份 `mig` App 的迁移记录表（`django_migrations`），让 Django 误以为迁移已经完成了。（跟 `--fake` 指令类似）
 
 顺利的话就已经搞定了：
 
@@ -469,6 +503,17 @@ Running migrations:
   No migrations to apply.
 ```
 
-除了上面三种方法外，前面还介绍了**修改依赖**、**删除错误迁移文件**等方法，请量体裁衣。
+除了上面三种方法外，前面还介绍了**迁移伪造**、**修改依赖**、**删除错误迁移文件**等方法，请量体裁衣，酌情使用。
 
-迁移愉快！
+## 总结
+
+折腾这么一圈，你对 `Migrations` 也有一定的了解了。总结起来就是下面这张内涵丰富的图（[@frostming](https://frostming.com/)提供）：
+
+![](http://blog.dusaiphoto.com/migration_workflow.jpg)
+
+- 数据迁移是一个很强大的功能，让完全不了解 SQL 的人可以以面向对象的方式管理数据库，保持 model 和数据库完全同步。
+- `makemigrations` 生成迁移文件是完全不管你的数据表实际什么样，全部是通过 `django_migrations` 的记录和 `migrations` 文件计算出来的。
+- 迁移文件是 Django 进行迁移的重要依据且互相依赖，不要随意改动，并应该纳入版本管理。虽然它可以手动修改，但前提是你完全了解它的工作原理。
+- 在迁移遭到破坏的情况下，不要想当然的去删表删文件瞎操作，而是利用好 Django 提供的方法，小心翼翼的恢复它。
+
+**祝迁移愉快！**
