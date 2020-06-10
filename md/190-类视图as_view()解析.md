@@ -7,9 +7,9 @@ path(..., function_view, ...)
 path(..., ClassView.as_view(), ...)
 ```
 
-这个 `as_view()` 很有意思，我们通过源码来看看它是如何变魔术般的把类转化成函数的。
+这个 `as_view()` 很有意思，我们通过源码来看看它是如何把类转化成函数的。
 
-源码并不是很长，全贴出来如下所示：
+源码不是很长，全贴出来如下所示：
 
 ```python
 class View:
@@ -57,9 +57,7 @@ class View:
 
 进入 `as_view()` 后首先对传入的参数做简单的校验，避免传入的参数将类自己的关键函数名覆盖掉，或者传入类中没定义的属性。开头这个 `for` 循环就是干这个用的。
 
-接着 `as_view()` 内部又定义了一个 `view()` 函数，它接收的参数和普通的**函数视图**是相同的： `request` 对象以及从 `url` 获取的 `args` 和 `kwargs` 参数。
-
-想必这个 `view()` 是相当重要了，我们挑重点看它在干什么：
+接着 `as_view()` 内部又定义了一个 `view()` 函数，它接收的参数和普通的**函数视图**是相同的： `request` 对象以及从 `url` 获取的 `args` 和 `kwargs` 参数。我们挑重点看它在干什么：
 
 ```python
 def view(request, *args, **kwargs):
@@ -105,9 +103,9 @@ class View:
         return handler(request, *args, **kwargs)
 ```
 
-`dispatch()` 非常简短，功能却非常重要：如果 `request.method` 是一个 `GET` 请求，则调用类视图 `self.get()` 方法，如果是 `POST` 请求，那就调用 `self.post()` 方法。这就起到根据 http 请求类型派发不同函数的功能，也是类视图的核心了。
+`dispatch()` 非常简短，功能却非常重要：如果 `request.method` 是一个 `GET` 请求，则调用类视图 `self.get()` 方法，如果是 `POST` 请求，那就调用 `self.post()` 方法。这就起到根据 http 请求类型派发到不同函数的功能，这是类视图的核心了。
 
-回到 `as_view()` 来，最后做了属性赋值、修改函数签名等收尾工作后，返回了 `view` 函数闭包：
+回到 `as_view()` 来，它最后做了属性赋值、修改函数签名等收尾工作后，返回了 `view` 函数闭包：
 
 ```python
 def as_view(cls, **initkwargs):
@@ -160,5 +158,7 @@ class View:
         ...
         return handler(request, *args, **kwargs)
 ```
+
+结果就是 `as_view()` 返回了一个函数（携带着必要的参数），和你用视图函数时直接传递给路由一个函数的效果是相同的。
 
 相当的神奇吧。
