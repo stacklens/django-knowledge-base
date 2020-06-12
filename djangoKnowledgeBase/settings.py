@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'demo',
     'mig',
     'transanction_demo',
+    'aggregation',
 ]
 
 MIDDLEWARE = [
