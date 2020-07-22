@@ -130,6 +130,31 @@ def uploads_files(request):
     return render(request, 'uploads_images.html', context={'images': Image.objects.all()})
 
 
+# MARK: - Session
+def session_visits_count(request):
+    count = request.session.get('visits_count', 0)
+    count += 1
+    request.session['visits_count'] = count
+
+    # del request.session['deeper_count']
+
+    # session 保存字典数据
+    if request.session.get('deeper_count'):
+        num = request.session['deeper_count']['num']
+        # 此时 session 并未更新，因为更新的仅仅是字典中的数据
+        request.session['deeper_count']['num'] = num + 1
+        # 通知会话已修改
+        # 注意：本视图中即使没有此指令也能正常保存，因为前面的 visits_count 已经触发了保存。
+        request.session.modified = True
+    else:
+        num = 1
+        request.session['deeper_count'] = {'num': num}
+
+
+    return  render(request, 'visits_count.html', context={'count': count, 'deeper_count': num})
+
+
+
 # Helper
 
 def detail_setup(obj):

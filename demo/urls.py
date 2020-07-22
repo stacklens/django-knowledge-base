@@ -7,6 +7,7 @@ from .views import (
     redirect_view,
     path_demo_view,
     uploads_files,
+    session_visits_count,
 )
 
 app_name = 'demo'
@@ -43,4 +44,7 @@ urlpatterns = [
 
     # MRAK: - 批量上传文件
     path('uploads/', uploads_files, name='uploads'),
+
+    # MARK: - Session
+    path('visits-count/', session_visits_count, name='visits_count'),
 ]
