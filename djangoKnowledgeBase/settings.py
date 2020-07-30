@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'mig',
     'transanction_demo',
     'aggregation',
+    'middleware',
 ]
 
 MIDDLEWARE = [
@@ -54,6 +55,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'middleware.middlewares.Md1',
+    'middleware.middlewares.Md2',
 ]
 
 ROOT_URLCONF = 'djangoKnowledgeBase.urls'

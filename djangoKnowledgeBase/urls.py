@@ -19,12 +19,16 @@ from demo.views import HomePageView
 from django.conf import settings
 from django.conf.urls.static import static
 
+from middleware.views import mid_test
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     # MARK: - include()
     path('demo/', include('demo.urls', namespace='demo')),
     path('', HomePageView.as_view(), name='home'),
-    path('transanction/', include('transanction_demo.urls', namespace='transanction'))
+    path('transanction/', include('transanction_demo.urls', namespace='transanction')),
+    # MAR: - 中间件 demo
+    path('middleware/',mid_test),
 ]
 # urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
