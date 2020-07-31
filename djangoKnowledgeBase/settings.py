@@ -56,8 +56,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    'middleware.middlewares.Md1',
-    'middleware.middlewares.Md2',
+    # 'middleware.middlewares.Md1',
+    # 'middleware.middlewares.Md2',
+    # 'middleware.middlewares.Md3',
+
+    # 'middleware.middlewares.NormalUserBlock',
+    # 'middleware.middlewares.DebugOnlySuperUser',
+    'middleware.middlewares.ResponseTimer',
 ]
 
 ROOT_URLCONF = 'djangoKnowledgeBase.urls'
