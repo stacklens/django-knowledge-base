@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'transanction_demo',
     'aggregation',
     'middleware',
+    'mySignal',
 ]
 
 MIDDLEWARE = [
