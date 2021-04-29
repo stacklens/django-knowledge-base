@@ -1,1 +1,1 @@
-# default_app_config = "djangoKnowledgeBase.mySignal.apps.MysignalConfig"
+default_app_config = "mySignal.apps.MysignalConfig"

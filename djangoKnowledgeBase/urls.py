@@ -29,6 +29,8 @@ urlpatterns = [
     path('transanction/', include('transanction_demo.urls', namespace='transanction')),
     # MAR: - 中间件 demo
     path('middleware/',mid_test),
+    # 信号
+    path('signal/', include('mySignal.urls', namespace='signal')),
 ]
 # urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
